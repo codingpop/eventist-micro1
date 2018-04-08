@@ -1,0 +1,39 @@
+{
+  "name": "eventist-micro1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "pm2 start app.js --watch --interpreter babel-node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codingpop/eventist-micro1.git"
+  },
+  "author": "Babatunde Adeyemi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codingpop/eventist-micro1/issues"
+  },
+  "homepage": "https://github.com/codingpop/eventist-micro1#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
+    "pm2": "^2.10.2",
+    "sequelize": "^4.37.6"
+  }
+}
