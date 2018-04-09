@@ -1,6 +1,7 @@
 import express from 'express';
 
 import appConfig from './config/appConfig';
+import ErrorHandler from './middleware/ErrorHandler';
 import routes from './routes';
 
 const app = express();
@@ -11,5 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1', routes.auth);
 
 app.get('/', (req, res) => res.json({ message: 'Welcome' }));
+
+app.use(ErrorHandler.handle);
 
 app.listen(appConfig.port);
