@@ -2,17 +2,21 @@ import express from 'express';
 import { celebrate, errors } from 'celebrate';
 
 import Auth from '../controllers/Auth';
-import RequestValidator from '../middleware/RequestValidator';
+import JoiSchemas from '../middleware/JoiSchemas';
 
 const auth = express.Router();
 
 auth.post(
   '/users/signup',
-  celebrate(RequestValidator.userSchema()),
+  celebrate(JoiSchemas.signUp()),
   Auth.signUp,
 );
 
-auth.post('/users/signin', Auth.signIn);
+auth.post(
+  '/users/signin',
+  celebrate(JoiSchemas.signIn()),
+  Auth.signIn,
+);
 
 auth.use(errors);
 
