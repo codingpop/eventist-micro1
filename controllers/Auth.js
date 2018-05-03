@@ -1,13 +1,17 @@
-import bcrypt from 'bcryptjs';
-
-import { User } from '../models';
-
-import createToken from '../helpers/createToken';
-
 /**
  * Auth class
  */
 export default class Auth {
+  /**
+   * @param {Object} dependencies - Auth dependencies
+   */
+  constructor(dependencies) {
+    this.User = dependencies.User;
+    this.bcrypt = dependencies.bcrypt;
+    this.createToken = dependencies.createToken;
+    this.excludeProperties = dependencies.excludeProperties;
+  }
+
   /**
    * Registers a new user
    *
@@ -19,31 +23,18 @@ export default class Auth {
    *
    * @returns {void}
    */
-  static async signUp(req, res, next) {
+  async signUp(req, res, next) {
     try {
-      const {
-        id,
-        firstName,
-        lastName,
-        email,
-        avatar,
-        isVerified,
-        isAdmin,
-      } = await User.create(req.body);
-
-      const user = {
-        id,
-        firstName,
-        lastName,
-        email,
-        avatar,
-        isVerified,
-        isAdmin,
-      };
+      const { dataValues } = await this.User.create(req.body);
+      const user = this.excludeProperties(dataValues, [
+        'password',
+        'createdAt',
+        'updatedAt',
+      ]);
 
       res.status(201).json({
         user,
-        token: createToken(req, user),
+        token: this.createToken(req, user),
       });
     } catch (err) {
       next(err);
@@ -61,38 +52,30 @@ export default class Auth {
    *
    * @returns {void}
    */
-  static async signIn(req, res, next) {
+  async signIn(req, res, next) {
     try {
       const { email, password } = req.body;
 
-      const existingUser = await User.findOne({
-        where: { email },
-        attributes: [
-          'id',
-          'firstName',
-          'lastName',
-          'email',
-          'avatar',
-          'isVerified',
-          'isAdmin',
-          'password',
-        ],
-      });
+      const existingUser = await this.User.findOne({ where: { email } });
 
       if (existingUser) {
         const { dataValues } = existingUser;
 
-        const passwordMatches = await bcrypt.compare(
+        const passwordMatches = await this.bcrypt.compare(
           password,
           dataValues.password,
         );
 
         if (passwordMatches) {
-          const user = { ...dataValues, password: undefined };
+          const user = this.excludeProperties(dataValues, [
+            'password',
+            'createdAt',
+            'updatedAt',
+          ]);
 
           res.status(200).json({
             user,
-            token: createToken(req, user),
+            token: this.createToken(req, user),
           });
         } else {
           const err = new Error();

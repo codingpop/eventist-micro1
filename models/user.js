@@ -37,9 +37,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isAdmin: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
+    role: {
+      type: DataTypes.ENUM,
+      values: ['user', 'admin', 'inactive'],
+      defaultValue: 'user',
     },
     password: {
       type: DataTypes.STRING,

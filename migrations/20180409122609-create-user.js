@@ -35,9 +35,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-      isAdmin: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      role: {
+        type: Sequelize.ENUM,
+        values: ['user', 'admin', 'inactive'],
+        defaultValue: 'user',
       },
       password: {
         type: Sequelize.STRING,
